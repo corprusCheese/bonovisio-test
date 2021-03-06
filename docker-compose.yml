@@ -1,0 +1,48 @@
+version: "3.3"
+
+services:
+  nginx:
+    container_name: nginx_1
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile.nginx
+    ports:
+      - 8098:80
+    links:
+      - fpm
+    volumes:
+      - ./:/var/www/bonovisio-test
+    networks:
+      - internal
+  fpm:
+    container_name: fpm_1
+    build:
+      context: .
+      dockerfile: docker/fpm/Dockerfile.fpm
+    volumes:
+      - ./:/var/www/bonovisio-test
+    links:
+      - mysql
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+    networks:
+      - internal
+  mysql:
+    image: mysql:5.7
+    container_name: db_2
+    ports:
+    - 33061:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bonovisio
+      - MYSQL_PASSWORD=pass
+      - MYSQL_USER=user
+    networks:
+      - internal
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28

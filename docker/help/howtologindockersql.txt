@@ -1,0 +1,7 @@
+docker exec -it mysql01 mysql -u root -p
+
+docker exec -it db_1 mysql -u root -p
+
+username mysql
+password is not set
+or change it in .env config

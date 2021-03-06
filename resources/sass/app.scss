@@ -1,0 +1,41 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// my styles
+.header {
+    background: whitesmoke;
+    text-align: center;
+    color: darkslategray;
+    padding: 10px;
+}
+
+.header a {
+    text-decoration: none!important;
+}
+
+.header a:hover {
+    color: yellow;
+}
+
+.custom-row {
+    background: whitesmoke;
+    margin-top: 90px;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    padding-top: 20px;
+}
+
+body, html {
+    height: 100%;
+}
+
+.form-show, .form-show:checked, .form-show:hover {
+    border: 1px solid grey!important;
+    border-radius: 5px;
+}
