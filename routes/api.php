@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
+
+Route::middleware([])
+    ->post("/letter", [\App\Http\Repositories\LetterRepository::class, "store"]);
+
+Route::middleware([])
+    ->get("/letter/{id}", [\App\Http\Repositories\LetterRepository::class, "show"])
+    ->where('id','[0-9]+');
+
+Route::middleware([])
+    ->get("/letter", [\App\Http\Repositories\LetterRepository::class, "find"]);
