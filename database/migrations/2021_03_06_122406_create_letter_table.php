@@ -17,8 +17,7 @@ class CreateLetterTable extends Migration
             $table->id();
             $table->string('name')->nullable(false);
             $table->string('email')->nullable(false);
-            $table->text('text');
-            $table->boolean("agreement");
+            $table->text('text')->nullable(true);
             $table->timestamps();
         });
     }

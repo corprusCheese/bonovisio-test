@@ -4,6 +4,8 @@
 
     docker-compose up -d
 
+сайт запустится на localhost:8098
+
 во избежание всех ошибок лучше сделать:
 
     sudo chmod -R 777 storage

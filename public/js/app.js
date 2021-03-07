@@ -1903,8 +1903,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'Create'
+  name: 'Create',
+  data: function data() {
+    return {
+      name: "",
+      email: "",
+      text: "",
+      agreement: false,
+      errors: []
+    };
+  },
+  methods: {
+    createLetter: function createLetter(e) {
+      e.preventDefault();
+      axios.post("/api/letter", {
+        "name": this.name,
+        "email": this.email,
+        "text": this.text
+      }).then(function (result) {
+        if (result.status === 200) {
+          alert("Письмо отправлено!");
+        } else {
+          alert("Ошибка отправления");
+        }
+      });
+    },
+    checkForm: function checkForm(e) {
+      this.errors = [];
+
+      if (!this.name) {
+        this.errors.push('Требуется указать имя.');
+      }
+
+      if (!this.email) {
+        this.errors.push('Требуется указать email.');
+      } else if (!this.validEmail(this.email)) {
+        this.errors.push('Укажите корректный адрес email.');
+      }
+
+      if (!this.agreement) {
+        this.errors.push('Нужно согласиться на обработку персональных данных для отправки письма.');
+      }
+
+      if (!this.errors.length) {
+        this.createLetter(e);
+        return true;
+      }
+
+      e.preventDefault();
+    },
+    validEmail: function validEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    }
+  }
 });
 
 /***/ }),
@@ -37880,14 +37943,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "container" }, [
+    _c("form", { attrs: { method: "post" }, on: { submit: _vm.checkForm } }, [
       _c("div", { staticClass: "row justify-content-center " }, [
         _c("div", { staticClass: "col-md-8 custom-row" }, [
           _c("p", { staticClass: "name" }, [
@@ -37896,8 +37953,30 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.name,
+                  expression: "name"
+                }
+              ],
               staticClass: "col-7 form-control",
-              attrs: { type: "text", name: "name", value: "Имя автора" }
+              attrs: {
+                id: "name",
+                type: "text",
+                name: "name",
+                placeholder: "Твоё имя"
+              },
+              domProps: { value: _vm.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.name = $event.target.value
+                }
+              }
             })
           ]),
           _vm._v(" "),
@@ -37907,25 +37986,104 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.email,
+                  expression: "email"
+                }
+              ],
               staticClass: "col-7 form-control",
-              attrs: { type: "text", name: "email", value: "name@example.com" }
+              attrs: {
+                id: "email",
+                type: "text",
+                name: "email",
+                placeholder: "name@example.com"
+              },
+              domProps: { value: _vm.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.email = $event.target.value
+                }
+              }
             })
           ]),
           _vm._v(" "),
-          _c("p", { staticClass: "message" }, [
-            _c("label", { staticClass: "col-5", attrs: { for: "message" } }, [
+          _c("p", { staticClass: "text" }, [
+            _c("label", { staticClass: "col-5", attrs: { for: "text" } }, [
               _vm._v("Текст сообщения")
             ]),
             _vm._v(" "),
             _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.text,
+                  expression: "text"
+                }
+              ],
               staticClass: "col-12 form-control",
               staticStyle: { height: "150px" },
-              attrs: { name: "message" }
+              attrs: {
+                id: "text",
+                name: "text",
+                placeholder: "Текст сообщения"
+              },
+              domProps: { value: _vm.text },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.text = $event.target.value
+                }
+              }
             })
           ]),
           _vm._v(" "),
           _c("p", { staticClass: "agreement" }, [
-            _c("input", { attrs: { name: "agreement", type: "checkbox" } }),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.agreement,
+                  expression: "agreement"
+                }
+              ],
+              attrs: { id: "agreement", name: "agreement", type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.agreement)
+                  ? _vm._i(_vm.agreement, null) > -1
+                  : _vm.agreement
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.agreement,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.agreement = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.agreement = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.agreement = $$c
+                  }
+                }
+              }
+            }),
             _vm._v(" "),
             _c(
               "label",
@@ -37934,15 +38092,39 @@ var staticRenderFns = [
             )
           ]),
           _vm._v(" "),
-          _c("p", { staticClass: "send" }, [
-            _c("input", {
-              staticClass: "btn col-5",
-              staticStyle: { background: "white", border: "1px solid grey" },
-              attrs: { type: "submit", value: "Создать письмо" }
-            })
-          ])
+          _vm._m(0)
         ])
       ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center mt-5" }, [
+      _vm.errors.length
+        ? _c("p", [
+            _c("b", [_vm._v("Пожалуйста исправьте указанные ошибки:")]),
+            _vm._v(" "),
+            _c(
+              "ul",
+              _vm._l(_vm.errors, function(error) {
+                return _c("li", [_vm._v(_vm._s(error))])
+              }),
+              0
+            )
+          ])
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "send" }, [
+      _c("input", {
+        staticClass: "btn col-5",
+        staticStyle: { background: "white", border: "1px solid grey" },
+        attrs: { id: "createButton", type: "submit", value: "Создать письмо" }
+      })
     ])
   }
 ]

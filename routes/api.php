@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LetterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,11 +21,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 Route::middleware([])
-    ->post("/letter", [\App\Http\Repositories\LetterRepository::class, "store"]);
+    ->any("/letter", [LetterController::class, "store"]);
 
 Route::middleware([])
-    ->get("/letter/{id}", [\App\Http\Repositories\LetterRepository::class, "show"])
+    ->get("/letter/{id}", [LetterController::class, "show"])
     ->where('id','[0-9]+');
 
 Route::middleware([])
-    ->get("/letter", [\App\Http\Repositories\LetterRepository::class, "find"]);
+    ->get("/letter", [LetterController::class, "find"]);

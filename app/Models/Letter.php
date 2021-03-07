@@ -20,7 +20,6 @@ class Letter extends Model
         'name',
         'email',
         'text',
-        'agreement'
     ];
 
     /**
@@ -29,8 +28,12 @@ class Letter extends Model
      * @var array
      */
     protected $hidden = [
-        'password',
-        'agreement',
     ];
 
+    public function getPhotoLinksFromText(): array
+    {
+        // этим получаем все ссылки
+        preg_match_all('#(?:https?|ftp)://[^\s\,\;]+/[a-zA-Z0-9а-яА-Я]+.(?:jpg|jpeg|png|gif)#i', $this['text'], $matches);
+        return $matches[0];
+    }
 }

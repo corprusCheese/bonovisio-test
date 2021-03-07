@@ -18,7 +18,4 @@ abstract class Repository {
     {
         return $this->model;
     }
-
-    abstract public function find($request);
-    abstract public function show(int $id);
 }
