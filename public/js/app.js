@@ -2037,8 +2037,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'Show'
+  name: 'Show',
+  data: function data() {
+    return {
+      page: 1,
+      sort: null,
+      letters: [],
+      next_link: null,
+      prev_link: null
+    };
+  },
+  methods: {
+    getLetters: function getLetters(page, sort) {
+      var _this = this;
+
+      axios.get("/api/letter", {
+        params: {
+          page: page,
+          created_at: sort
+        }
+      }).then(function (result) {
+        if (result.status === 200) {
+          _this.page = result.data.current_page;
+          _this.prev_link = result.data.prev_page_url;
+          _this.next_link = result.data.next_page_url;
+          _this.letters = result.data.data;
+          _this.sort = sort;
+        } else {
+          alert("Ошибка сервера");
+        }
+      });
+    },
+    showButtons: function showButtons() {
+      return false;
+    },
+    setDesc: function setDesc() {
+      this.sortCreated = "desc";
+    }
+  },
+  created: function created() {
+    this.getLetters();
+  }
 });
 
 /***/ }),
@@ -38206,52 +38255,122 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "container pb-5" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-link",
+            on: {
+              click: function($event) {
+                return _vm.getLetters(_vm.page, "asc")
+              }
+            }
+          },
+          [_vm._v("Сортировать по возрастанию даты создания")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-link",
+            on: {
+              click: function($event) {
+                return _vm.getLetters(_vm.page, "desc")
+              }
+            }
+          },
+          [_vm._v("Сортировать по убыванию даты создания")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row mt-5 justify-content-center pb-5" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-link",
+            on: {
+              click: function($event) {
+                return _vm.getLetters(
+                  _vm.prev_link ? _vm.page - 1 : _vm.page,
+                  _vm.sort
+                )
+              }
+            }
+          },
+          [_vm._v("Назад")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-link",
+            on: {
+              click: function($event) {
+                return _vm.getLetters(
+                  _vm.next_link ? _vm.page + 1 : _vm.page,
+                  _vm.sort
+                )
+              }
+            }
+          },
+          [_vm._v("Вперед")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.letters, function(item) {
+        return _c("div", { staticClass: "row justify-content-center" }, [
+          _c("div", { staticClass: "col-md-6 custom-row pb-2" }, [
+            _c("p", { staticClass: "name" }, [
+              _c("label", { staticClass: "col-12" }, [_vm._v("Имя")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "col-12 form-control",
+                attrs: { readonly: "", type: "text", name: "name" },
+                domProps: { value: item.name }
+              })
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "email" }, [
+              _c("label", { staticClass: "col-12" }, [_vm._v("E-Mail")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "col-12 form-control",
+                attrs: { readonly: "", type: "text", name: "email" },
+                domProps: { value: item.email }
+              })
+            ])
+          ])
+        ])
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center " }, [
-        _c("div", { staticClass: "col-md-8 custom-row" }, [
-          _c("p", { staticClass: "name" }, [
-            _c("label", { staticClass: "col-5", attrs: { for: "name" } }, [
-              _vm._v("Имя")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "col-7 form-show",
-              attrs: { readonly: "", type: "text", name: "name", value: "" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "email" }, [
-            _c("label", { staticClass: "col-5", attrs: { for: "email" } }, [
-              _vm._v("E-Mail")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "col-7 form-show",
-              attrs: { readonly: "", type: "text", name: "email", value: "" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "message" }, [
-            _c("label", { staticClass: "col-5", attrs: { for: "message" } }, [
-              _vm._v("Текст сообщения")
-            ]),
-            _vm._v(" "),
-            _c("textarea", {
-              staticClass: "col-12 form-show",
-              staticStyle: { "min-height": "150px", height: "fit-content" },
-              attrs: { readonly: "", name: "message" }
-            })
-          ])
-        ])
-      ])
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "mt-5 alert alert-warning text-center",
+        attrs: { role: "alert" }
+      },
+      [
+        _vm._v("\n        Эта страница использует роут "),
+        _c("a", { attrs: { href: "/api/letter" } }, [_vm._v("/api/letter")]),
+        _vm._v(
+          " и в соответствии с заданием он выдает только поля name и email..\n    "
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true

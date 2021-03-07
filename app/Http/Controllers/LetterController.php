@@ -40,13 +40,13 @@ class LetterController extends Controller
 
         $result = $this->repository->show($id, $fields, $images);
 
-        return response()->json($result, $result ? 200: 404);
+        return response()->json($result, $result ? 200: 404, [], JSON_PRETTY_PRINT);
     }
 
     // фильтрация
     public function find(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = $this->repository->find($request);
-        return response()->json($result, $result ? 200: 404);
+        return response()->json($result, $result ? 200: 404, [], JSON_PRETTY_PRINT);
     }
 }
