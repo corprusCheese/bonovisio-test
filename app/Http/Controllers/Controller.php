@@ -8,6 +8,17 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * @OA\Info(
+ *     title="Laravel Swagger API documentation example",
+ *     version="1.0.0",
+ * )
+ * @OA\Server(
+ *     description="Laravel Swagger API server",
+ *     url="http://localhost:8098/api"
+ * )
+ */
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

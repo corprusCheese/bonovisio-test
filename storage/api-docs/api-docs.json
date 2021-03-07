@@ -1,0 +1,221 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Swagger API documentation example",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8098/api",
+            "description": "Laravel Swagger API server"
+        }
+    ],
+    "paths": {
+        "/letter": {
+            "get": {
+                "tags": [
+                    "Letter"
+                ],
+                "summary": "Filter letter by request options.",
+                "operationId": "letterAll",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "created_at",
+                        "in": "query",
+                        "description": "Sort by created_at field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Letter"
+                ],
+                "summary": "Create letters.",
+                "operationId": "letterSave",
+                "requestBody": {
+                    "description": "Everything is fine",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "title": "name",
+                                        "description": "name of user",
+                                        "type": "string",
+                                        "example": "nikita"
+                                    },
+                                    "email": {
+                                        "title": "email",
+                                        "description": "email of user",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "nikita@yandex.ru"
+                                    },
+                                    "text": {
+                                        "title": "text",
+                                        "description": "letter text",
+                                        "type": "string",
+                                        "example": "random text https://github.com/zircote/swagger-php/issues/25.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Letter is created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "title": "id",
+                                            "description": "Id of the letter",
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Letter is not created"
+                    }
+                }
+            }
+        },
+        "/letter/{id}": {
+            "get": {
+                "tags": [
+                    "Letter"
+                ],
+                "summary": "Show letter by request options.",
+                "operationId": "letterShow",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Get special data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "description",
+                                "images"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID of example",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show description",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "title": "id",
+                                            "description": "Id of the letter",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "title": "name",
+                                            "description": "name of user",
+                                            "type": "string",
+                                            "example": "nikita"
+                                        },
+                                        "email": {
+                                            "title": "email",
+                                            "description": "email of user",
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "nikita@yandex.ru"
+                                        },
+                                        "text": {
+                                            "title": "text",
+                                            "description": "letter text",
+                                            "type": "string",
+                                            "example": "random text https://github.com/zircote/swagger-php/issues/25.jpg"
+                                        },
+                                        "created_at": {
+                                            "title": "created_at",
+                                            "description": "created at",
+                                            "type": "string",
+                                            "example": "2021-03-07T08:52:54.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "title": "updated_at",
+                                            "description": "updated at",
+                                            "type": "string",
+                                            "example": "2021-03-07T08:52:54.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
