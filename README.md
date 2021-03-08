@@ -20,3 +20,7 @@
 перед этим на всякий случай
 
     php artisan config:cache
+
+## тесты
+
+    docker-compose exec fpm php artisan test

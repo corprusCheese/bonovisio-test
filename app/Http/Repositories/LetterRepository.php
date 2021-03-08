@@ -9,11 +9,15 @@ class LetterRepository extends Repository {
 
     const PAGINATE_CONST = 10;
 
-    public function show(int $id, array $fields, ?bool $images = false) {
+    public function show(int $id, array $fields)
+    {
+        return $this->model->findOrFail($id, $fields);
+    }
 
-        $result = $this->model->findOrFail($id, $fields);
-
-        if ($images && $result) {
+    public function showOnlyImages(int $id)
+    {
+        $result = $this->model->findOrFail($id, ['text']);
+        if ($result) {
             $result['images'] = $result->getPhotoLinksFromText();
             unset($result['text']);
         }
@@ -21,11 +25,11 @@ class LetterRepository extends Repository {
         return $result;
     }
 
-    public function find(Request $request) {
-
-        if ($request->get("created_at") === "asc") {
+    public function find(?string $createdAtSort = null)
+    {
+        if ($createdAtSort === "asc") {
             $result = $this->model::orderBy("created_at");
-        } else if ($request->get("created_at") === "desc") {
+        } else if ($createdAtSort === "desc") {
             $result = $this->model::orderByDesc("created_at");
         } else {
             $result = $this->model::where([]);

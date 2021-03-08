@@ -64,6 +64,7 @@ class LetterController extends Controller
      *
      * Create letters.
      *
+     * @param LetterCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
 
@@ -164,6 +165,8 @@ class LetterController extends Controller
      *
      * Show letter by request options.
      *
+     * @param Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
 
@@ -175,7 +178,7 @@ class LetterController extends Controller
                 $images = false;
                 break;
             case "images":
-                $fields = ["text"];
+                $fields = ["*"];
                 $images = true;
                 break;
             default:
@@ -184,7 +187,9 @@ class LetterController extends Controller
                 break;
         }
 
-        $result = $this->repository->show($id, $fields, $images);
+        $result = $images
+            ? $this->repository->showOnlyImages($id)
+            : $this->repository->show($id, $fields);
 
         return response()->json($result, $result ? 200: 404, [], JSON_PRETTY_PRINT);
     }
@@ -232,12 +237,15 @@ class LetterController extends Controller
      *
      * Filter letter by request options.
      *
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
 
     public function find(Request $request): \Illuminate\Http\JsonResponse
     {
-        $result = $this->repository->find($request);
+        $createdAtSort = $request->get("created_at");
+        $result = $this->repository->find($createdAtSort);
+
         return response()->json($result, $result ? 200: 404, [], JSON_PRETTY_PRINT);
     }
 }
